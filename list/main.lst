@@ -1,0 +1,151 @@
+C51 COMPILER V9.01   MAIN                                                                  11/26/2017 17:20:51 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\list\main.obj
+COMPILER INVOKED BY: D:\Keil\C51\BIN\C51.EXE main.c BROWSE DEBUG OBJECTEXTEND PRINT(.\list\main.lst) OBJECT(.\list\main.
+                    -obj)
+
+line level    source
+
+   1          
+   2          /*------------------------------------------------------------------*/
+   3          /* --- STC MCU International Limited -------------------------------*/
+   4          /* --- STC 1T Series MCU RC Demo -----------------------------------*/
+   5          /* --- Mobile: (86)13922805190 -------------------------------------*/
+   6          /* --- Fax: 86-0513-55012956,55012947,55012969 ---------------------*/
+   7          /* --- Tel: 86-0513-55012928,55012929,55012966 ---------------------*/
+   8          /* --- Web: www.GXWMCU.com -----------------------------------------*/
+   9          /* --- QQ:  800003751 ----------------------------------------------*/
+  10          /* If you want to use the program or the program referenced in the  */
+  11          /* article, please specify in which data and procedures from STC    */
+  12          /*------------------------------------------------------------------*/
+  13          /*****************基于22.1184Mhz**********************************/
+  14          
+  15          #include        "config.h"
+  16          #include        "USART1.h"
+  17          #include        "delay.h"
+  18          #include        "hmc5883l.h"
+  19          
+  20          /*************  功能说明        **************
+  21          
+  22          功能：测量页面位置
+  23          版本号：V3.0
+  24          说明：
+  25                  1.修改波特率为115200，
+  26                  2.修改通讯口为uart1（即，P30,P31）
+  27                  3.修缮通讯协议的应答功能
+  28          
+  29          ******************************************/
+  30          
+  31          /*************  本地常量声明    **************/
+  32          
+  33          
+  34          /*************  本地变量声明    **************/
+  35          
+  36          
+  37          
+  38          
+  39          
+  40          /*************  本地函数声明    **************/
+  41          
+  42          
+  43          
+  44          /*************  外部函数和变量声明 *****************/
+  45          
+  46          
+  47          /*************  串口1初始化函数 *****************/
+  48          void UART_config(void)
+  49          {
+  50   1              COMx_InitDefine         COMx_InitStructure;                                     //结构定义
+  51   1              COMx_InitStructure.UART_Mode      = UART_8bit_BRTx;             //模式,       UART_ShiftRight,UART_8bit_BRTx,UART_9b
+             -it,UART_9bit_BRTx
+  52   1              COMx_InitStructure.UART_BRT_Use   = BRT_Timer2;                 //使用波特率,   BRT_Timer1, BRT_Timer2 (注意: 串口2固定
+             -使用BRT_Timer2)
+C51 COMPILER V9.01   MAIN                                                                  11/26/2017 17:20:51 PAGE 2   
+
+  53   1              COMx_InitStructure.UART_BaudRate  = 115200ul;                   //波特率, 一般 110 ~ 115200
+  54   1              COMx_InitStructure.UART_RxEnable  = ENABLE;                             //接收允许,   ENABLE或DISABLE
+  55   1              COMx_InitStructure.BaudRateDouble = DISABLE;                    //波特率加倍, ENABLE或DISABLE
+  56   1              COMx_InitStructure.UART_Interrupt = ENABLE;                             //中断允许,   ENABLE或DISABLE
+  57   1              COMx_InitStructure.UART_Polity    = PolityLow;                  //中断优先级, PolityLow,PolityHigh
+  58   1              COMx_InitStructure.UART_P_SW      = UART1_SW_P30_P31;   //切换端口,   UART1_SW_P30_P31,UART1_SW_P36_P37,UAR
+             -T1_SW_P16_P17(必须使用内部时钟)
+  59   1              COMx_InitStructure.UART_RXD_TXD_Short = DISABLE;                //内部短路RXD与TXD, 做中继, ENABLE,DISABLE
+  60   1              USART_Configuration(USART1, &COMx_InitStructure);               //初始化串口1 USART1,USART2
+  61   1      
+  62   1      //      PrintString1("STC15F2K60S2 UART1 Test Prgramme!\r\n");  //SUART1发送一个字符串
+  63   1      
+  64   1      }
+  65          
+  66          
+  67          void main(void)
+  68          {
+  69   1              double angle;
+  70   1      
+  71   1              GetRequest=     0;
+  72   1              UART_config();
+  73   1              Init_HMC5883();
+  74   1              EA = 1;
+  75   1              
+  76   1      delay_ms(20);
+  77   1      
+  78   1              while (1)
+  79   1              {
+  80   2      
+  81   2              Multiple_Read_HMC5883();
+  82   2      
+  83   2              angle= atan2((double)u16_y,(double)u16_x) * (180 / 3.14159265) + 180; // angle in degrees
+  84   2      //      val[0]=((int)angle >> 7) && 
+  85   2      /*
+  86   2      //      if((0 < angle) && (angle < 180) )
+  87   2      //    {
+  88   2      //        angle=angle;
+  89   2      //    }
+  90   2      //    else
+  91   2      //    {
+  92   2      //        angle=360-angle;
+  93   2      //    }
+  94   2              TX1_write2buff('*');
+  95   2              TX1_write2buff('*');    
+  96   2              TX1_write2buff(((int)angle/100) +0x30);
+  97   2              TX1_write2buff(((int)angle%100)/10 +0x30);
+  98   2              TX1_write2buff(((int)angle%10) +0x30);
+  99   2              TX1_write2buff('*');
+ 100   2              TX1_write2buff('*');
+ 101   2              TX1_write2buff('\n');
+ 102   2      */
+ 103   2                      if(GetRequest==1)        //收到读取请求
+ 104   2                      {
+ 105   3                              GetRequest=0; //复位请求信号；
+ 106   3      
+ 107   3                              /*********发送数据**************/
+ 108   3                              TX1_write2buff(0xF0);
+ 109   3                              TX1_write2buff(AVA_Compass);
+ 110   3                              TX1_write2buff(myaddr);//
+ 111   3                              TX1_write2buff( ( (unsigned int)angle >>7 ) & 0x007f );//
+ 112   3                              TX1_write2buff( ( (unsigned int)angle ) & 0x007f);  //液面状态 0：未检测到页面 1；检测到液面
+ 113   3                              TX1_write2buff(0xF7);
+C51 COMPILER V9.01   MAIN                                                                  11/26/2017 17:20:51 PAGE 3   
+
+ 114   3      
+ 115   3                      //      TX1_write2buff('\n');
+ 116   3                      
+ 117   3                      }
+ 118   2                      delay_ms(5);
+ 119   2              }
+ 120   1      }                       
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    216    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----      17
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

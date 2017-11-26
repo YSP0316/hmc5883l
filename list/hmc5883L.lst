@@ -1,0 +1,223 @@
+C51 COMPILER V9.01   HMC5883L                                                              11/26/2017 17:20:51 PAGE 1   
+
+
+C51 COMPILER V9.01, COMPILATION OF MODULE HMC5883L
+OBJECT MODULE PLACED IN .\list\hmc5883L.obj
+COMPILER INVOKED BY: D:\Keil\C51\BIN\C51.EXE hmc5883L.C BROWSE DEBUG OBJECTEXTEND PRINT(.\list\hmc5883L.lst) OBJECT(.\li
+                    -st\hmc5883L.obj)
+
+line level    source
+
+   1          #include "hmc5883l.h"
+   2          
+   3          //typedef unsigned char BYTE;
+   4          //typedef unsigned short WORD;
+   5          
+   6          BYTE BUF[8];                         //接收数据缓存区
+   7          signed int u16_x;
+   8          signed int u16_y;
+   9          signed int u16_z;       
+  10          int  dis_data;                       //变量
+  11          
+  12          
+  13          
+  14          /**************************************
+  15          延时5微秒(STC90C52RC@12M)
+  16          不同的工作环境,需要调整此函数，注意时钟过快时需要修改
+  17          当改用1T的MCU时,请调整此延时函数
+  18          **************************************/
+  19          //void Delay5us()
+  20          //{
+  21          //    _nop_();_nop_();_nop_();_nop_();
+  22          //    _nop_();_nop_();_nop_();_nop_();
+  23          //      _nop_();_nop_();_nop_();_nop_();
+  24          //      _nop_();_nop_();_nop_();_nop_();
+  25          //    _nop_();_nop_();_nop_();_nop_();
+  26          //}
+  27          
+  28          /**************************************
+  29          延时5毫秒(STC90C52RC@12M)
+  30          不同的工作环境,需要调整此函数
+  31          当改用1T的MCU时,请调整此延时函数
+  32          **************************************/
+  33          //void Delay5ms()
+  34          //{
+  35          //    WORD n = 560;
+  36          //
+  37          //    while (n--);
+  38          //}
+  39          
+  40          /**************************************
+  41          起始信号
+  42          **************************************/
+  43          void HMC5883_Start()
+  44          {
+  45   1          SDA = 1;                    //拉高数据线
+  46   1          SCL = 1;                    //拉高时钟线
+  47   1          Delay5us();                 //延时
+  48   1          SDA = 0;                    //产生下降沿
+  49   1          Delay5us();                 //延时
+  50   1          SCL = 0;                    //拉低时钟线
+  51   1      }
+  52          
+  53          /**************************************
+  54          停止信号
+C51 COMPILER V9.01   HMC5883L                                                              11/26/2017 17:20:51 PAGE 2   
+
+  55          **************************************/
+  56          void HMC5883_Stop()
+  57          {
+  58   1          SDA = 0;                    //拉低数据线
+  59   1          SCL = 1;                    //拉高时钟线
+  60   1          Delay5us();                 //延时
+  61   1          SDA = 1;                    //产生上升沿
+  62   1          Delay5us();                 //延时
+  63   1      }
+  64          
+  65          /**************************************
+  66          发送应答信号
+  67          入口参数:ack (0:ACK 1:NAK)
+  68          **************************************/
+  69          void HMC5883_SendACK(bit ack)
+  70          {
+  71   1          SDA = ack;                  //写应答信号
+  72   1          SCL = 1;                    //拉高时钟线
+  73   1          Delay5us();                 //延时
+  74   1          SCL = 0;                    //拉低时钟线
+  75   1          Delay5us();                 //延时
+  76   1      }
+  77          
+  78          /**************************************
+  79          接收应答信号
+  80          **************************************/
+  81          bit HMC5883_RecvACK()
+  82          {
+  83   1          SCL = 1;                    //拉高时钟线
+  84   1          Delay5us();                 //延时
+  85   1          CY = SDA;                   //读应答信号
+  86   1          SCL = 0;                    //拉低时钟线
+  87   1          Delay5us();                 //延时
+  88   1      
+  89   1          return CY;
+  90   1      }
+  91          
+  92          /**************************************
+  93          向IIC总线发送一个字节数据
+  94          **************************************/
+  95          void HMC5883_SendByte(BYTE dat)
+  96          {
+  97   1          BYTE i;
+  98   1      
+  99   1          for (i=0; i<8; i++)         //8位计数器
+ 100   1          {
+ 101   2              dat <<= 1;              //移出数据的最高位
+ 102   2              SDA = CY;               //送数据口
+ 103   2              SCL = 1;                //拉高时钟线
+ 104   2              Delay5us();             //延时
+ 105   2              SCL = 0;                //拉低时钟线
+ 106   2              Delay5us();             //延时
+ 107   2          }
+ 108   1          HMC5883_RecvACK();
+ 109   1      }
+ 110          
+ 111          /**************************************
+ 112          从IIC总线接收一个字节数据
+ 113          **************************************/
+ 114          BYTE HMC5883_RecvByte()
+ 115          {
+ 116   1          BYTE i;
+C51 COMPILER V9.01   HMC5883L                                                              11/26/2017 17:20:51 PAGE 3   
+
+ 117   1          BYTE dat = 0;
+ 118   1      
+ 119   1          SDA = 1;                    //使能内部上拉,准备读取数据,
+ 120   1          for (i=0; i<8; i++)         //8位计数器
+ 121   1          {
+ 122   2              dat <<= 1;
+ 123   2              SCL = 1;                //拉高时钟线
+ 124   2              Delay5us();             //延时
+ 125   2              dat |= SDA;             //读数据               
+ 126   2              SCL = 0;                //拉低时钟线
+ 127   2              Delay5us();             //延时
+ 128   2          }
+ 129   1          return dat;
+ 130   1      }
+ 131          
+ 132          //***************************************************
+ 133          
+ 134          void Single_Write_HMC5883(uchar REG_Address,uchar REG_data)
+ 135          {
+ 136   1          HMC5883_Start();                  //起始信号
+ 137   1          HMC5883_SendByte(SlaveAddress);   //发送设备地址+写信号
+ 138   1          HMC5883_SendByte(REG_Address);    //内部寄存器地址，请参考中文pdf 
+ 139   1          HMC5883_SendByte(REG_data);       //内部寄存器数据，请参考中文pdf
+ 140   1          HMC5883_Stop();                   //发送停止信号
+ 141   1      }
+ 142           /*
+ 143          //********单字节读取内部寄存器*************************
+ 144          uchar Single_Read_HMC5883(uchar REG_Address)
+ 145          {  uchar REG_data;
+ 146              HMC5883_Start();                          //起始信号
+ 147              HMC5883_SendByte(SlaveAddress);           //发送设备地址+写信号
+ 148              HMC5883_SendByte(REG_Address);                   //发送存储单元地址，从0开始        
+ 149              HMC5883_Start();                          //起始信号
+ 150              HMC5883_SendByte(SlaveAddress+1);         //发送设备地址+读信号
+ 151              REG_data=HMC5883_RecvByte();              //读出寄存器数据
+ 152                  HMC5883_SendACK(1);   
+ 153                  HMC5883_Stop();                           //停止信号
+ 154              return REG_data; 
+ 155          }
+ 156          */
+ 157          //******************************************************
+ 158          //
+ 159          //连续读出HMC5883内部角度数据，地址范围0x3~0x5
+ 160          //
+ 161          //******************************************************
+ 162          void Multiple_read_HMC5883(void)
+ 163          {   uchar i;
+ 164   1          HMC5883_Start();                          //起始信号
+ 165   1          HMC5883_SendByte(SlaveAddress);           //发送设备地址+写信号
+ 166   1          HMC5883_SendByte(0x03);                   //发送存储单元地址，从0x3开始     
+ 167   1          HMC5883_Start();                          //起始信号
+ 168   1          HMC5883_SendByte(SlaveAddress+1);         //发送设备地址+读信号
+ 169   1               for (i=0; i<7; i++)                      //连续读取6个地址数据，存储中BUF
+ 170   1          {
+ 171   2              BUF[i] = HMC5883_RecvByte();          //BUF[0]存储0x32地址中的数据
+ 172   2              if (i == 6)
+ 173   2              {
+ 174   3                 HMC5883_SendACK(1);                //最后一个数据需要回NOACK
+ 175   3              }
+ 176   2              else
+ 177   2              {
+ 178   3                HMC5883_SendACK(0);                //回应ACK
+C51 COMPILER V9.01   HMC5883L                                                              11/26/2017 17:20:51 PAGE 4   
+
+ 179   3             }
+ 180   2         }
+ 181   1          HMC5883_Stop();                          //停止信号
+ 182   1              u16_x = BUF[0] << 8 | BUF[1]; 
+ 183   1          u16_y = BUF[4] << 8 | BUF[5]; 
+ 184   1              u16_z = BUF[2] << 8 | BUF[3];
+ 185   1          Delay5ms();
+ 186   1      }
+ 187          
+ 188          //初始化HMC5883，根据需要请参考pdf进行修改****
+ 189          void Init_HMC5883()
+ 190          {
+ 191   1           Single_Write_HMC5883(0x02,0x00);  //
+ 192   1               Single_Write_HMC5883(0x01,0xE0);  //
+ 193   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    256    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     16       7
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----       1
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
