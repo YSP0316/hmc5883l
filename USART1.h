@@ -17,7 +17,7 @@
 
 #include	"config.h"
 #define myaddr 1
-#define AVA_Compass    0x0B		//ÒºÃæ¼ì²â
+#define AVA_Compass    0x0F		//ÒºÃæ¼ì²â
 
 extern unsigned char UartGroup;			//user define  ; ´®¿Ú×éºÅ
 

@@ -1,9 +1,9 @@
-C51 COMPILER V9.01   DELAY                                                                 11/26/2017 17:20:51 PAGE 1   
+C51 COMPILER V9.01   DELAY                                                                 11/27/2017 15:22:16 PAGE 1   
 
 
 C51 COMPILER V9.01, COMPILATION OF MODULE DELAY
 OBJECT MODULE PLACED IN .\list\delay.obj
-COMPILER INVOKED BY: D:\Keil\C51\BIN\C51.EXE delay.c BROWSE DEBUG OBJECTEXTEND PRINT(.\list\delay.lst) OBJECT(.\list\del
+COMPILER INVOKED BY: d:\Keil\C51\BIN\C51.EXE delay.c BROWSE DEBUG OBJECTEXTEND PRINT(.\list\delay.lst) OBJECT(.\list\del
                     -ay.obj)
 
 line level    source
@@ -62,7 +62,7 @@ line level    source
   52   1      }
   53          void Delay5us()
   54          {
-C51 COMPILER V9.01   DELAY                                                                 11/26/2017 17:20:51 PAGE 2   
+C51 COMPILER V9.01   DELAY                                                                 11/27/2017 15:22:16 PAGE 2   
 
   55   1              unsigned int i;
   56   1              i = MAIN_Fosc / 2600000;                         //(fosc/13000)/1000*5

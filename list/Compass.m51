@@ -1,4 +1,4 @@
-BL51 BANKED LINKER/LOCATER V6.22                                                        11/26/2017  17:20:51  PAGE 1
+BL51 BANKED LINKER/LOCATER V6.22                                                        11/27/2017  15:22:17  PAGE 1
 
 
 BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
@@ -59,7 +59,7 @@ LINK MAP OF MODULE:  .\list\Compass (DELAY)
             * * * * * * *   C O D E   M E M O R Y   * * * * * * *
             CODE    0000H     0003H     ABSOLUTE     
             CODE    0003H     001DH     UNIT         ?PR?_TX1_WRITE2BUFF?USART1
-BL51 BANKED LINKER/LOCATER V6.22                                                      11/26/2017  17:20:51  PAGE 2
+BL51 BANKED LINKER/LOCATER V6.22                                                      11/27/2017  15:22:17  PAGE 2
 
 
                     0020H     0003H                  *** GAP ***
@@ -119,7 +119,7 @@ SEGMENT                                       BIT_GROUP          DATA_GROUP
   +--> ?PR?HMC5883_START?HMC5883L
   +--> ?PR?_HMC5883_SENDBYTE?HMC5883L
   +--> ?PR?HMC5883_STOP?HMC5883L
-BL51 BANKED LINKER/LOCATER V6.22                                                      11/26/2017  17:20:51  PAGE 3
+BL51 BANKED LINKER/LOCATER V6.22                                                      11/27/2017  15:22:17  PAGE 3
 
 
 
@@ -179,7 +179,7 @@ SYMBOL TABLE OF MODULE:  .\list\Compass (DELAY)
   D:0088H         PUBLIC        TCON
   D:00F0H         PUBLIC        B
   D:00E0H         PUBLIC        ACC
-BL51 BANKED LINKER/LOCATER V6.22                                                      11/26/2017  17:20:51  PAGE 4
+BL51 BANKED LINKER/LOCATER V6.22                                                      11/27/2017  15:22:17  PAGE 4
 
 
   C:0C12H         PUBLIC        _delay_ms
@@ -239,7 +239,7 @@ SYMBOL TABLE OF MODULE:  .\list\Compass (DELAY)
   B:00A8H.4       PUBLIC        ES
   D:00B8H         PUBLIC        IP
   I:003BH         PUBLIC        RX1_Buffer
-BL51 BANKED LINKER/LOCATER V6.22                                                      11/26/2017  17:20:51  PAGE 5
+BL51 BANKED LINKER/LOCATER V6.22                                                      11/27/2017  15:22:17  PAGE 5
 
 
   B:0098H.0       PUBLIC        RI
@@ -299,7 +299,7 @@ SYMBOL TABLE OF MODULE:  .\list\Compass (DELAY)
   C:0660H         LINE#         52
   C:0660H         LINE#         53
   C:0679H         LINE#         54
-BL51 BANKED LINKER/LOCATER V6.22                                                      11/26/2017  17:20:51  PAGE 6
+BL51 BANKED LINKER/LOCATER V6.22                                                      11/27/2017  15:22:17  PAGE 6
 
 
   C:0690H         LINE#         55
@@ -359,7 +359,7 @@ SYMBOL TABLE OF MODULE:  .\list\Compass (DELAY)
   C:0003H         LINE#         110
   C:0003H         LINE#         111
   C:000AH         LINE#         112
-BL51 BANKED LINKER/LOCATER V6.22                                                      11/26/2017  17:20:51  PAGE 7
+BL51 BANKED LINKER/LOCATER V6.22                                                      11/27/2017  15:22:17  PAGE 7
 
 
   C:0016H         LINE#         114
@@ -419,7 +419,7 @@ SYMBOL TABLE OF MODULE:  .\list\Compass (DELAY)
   C:09EBH         LINE#         182
   C:09EBH         LINE#         183
   -------         ENDPROC       UART1_INT
-BL51 BANKED LINKER/LOCATER V6.22                                                      11/26/2017  17:20:51  PAGE 8
+BL51 BANKED LINKER/LOCATER V6.22                                                      11/27/2017  15:22:17  PAGE 8
 
 
   -------         ENDMOD        USART1
@@ -479,7 +479,7 @@ SYMBOL TABLE OF MODULE:  .\list\Compass (DELAY)
   C:091EH         LINE#         104
   C:091EH         LINE#         105
   C:091FH         LINE#         108
-BL51 BANKED LINKER/LOCATER V6.22                                                      11/26/2017  17:20:51  PAGE 9
+BL51 BANKED LINKER/LOCATER V6.22                                                      11/27/2017  15:22:17  PAGE 9
 
 
   C:0924H         LINE#         109
@@ -539,7 +539,7 @@ SYMBOL TABLE OF MODULE:  .\list\Compass (DELAY)
   -------         ENDPROC       HMC5883_START
   -------         PROC          HMC5883_STOP
   C:0C5AH         LINE#         56
-BL51 BANKED LINKER/LOCATER V6.22                                                      11/26/2017  17:20:51  PAGE 10
+BL51 BANKED LINKER/LOCATER V6.22                                                      11/27/2017  15:22:17  PAGE 10
 
 
   C:0C5AH         LINE#         57
@@ -599,7 +599,7 @@ SYMBOL TABLE OF MODULE:  .\list\Compass (DELAY)
   C:0B7AH         LINE#         119
   C:0B7CH         LINE#         120
   C:0B7EH         LINE#         121
-BL51 BANKED LINKER/LOCATER V6.22                                                      11/26/2017  17:20:51  PAGE 11
+BL51 BANKED LINKER/LOCATER V6.22                                                      11/27/2017  15:22:17  PAGE 11
 
 
   C:0B7EH         LINE#         122
@@ -659,7 +659,7 @@ SYMBOL TABLE OF MODULE:  .\list\Compass (DELAY)
   -------         ENDPROC       INIT_HMC5883
   -------         ENDMOD        HMC5883L
 
-BL51 BANKED LINKER/LOCATER V6.22                                                      11/26/2017  17:20:51  PAGE 12
+BL51 BANKED LINKER/LOCATER V6.22                                                      11/27/2017  15:22:17  PAGE 12
 
 
   -------         MODULE        ?C?FPADD
@@ -719,7 +719,7 @@ SYMBOL TABLE OF MODULE:  .\list\Compass (DELAY)
   C:055FH         PUBLIC        ?C?ULCMP
   -------         ENDMOD        ?C?ULCMP
 
-BL51 BANKED LINKER/LOCATER V6.22                                                      11/26/2017  17:20:51  PAGE 13
+BL51 BANKED LINKER/LOCATER V6.22                                                      11/27/2017  15:22:17  PAGE 13
 
 
   -------         MODULE        ?C?ULSHR
